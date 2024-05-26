@@ -13,8 +13,8 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model AppUsers {
-  AppUserId Int @id @default(autoincrement()) @map("AppUserId")
+model Users {
+  UserId Int @id @default(autoincrement()) @map("userId")
   email String @unique @map("email")
   password String @map("password")
 
@@ -22,27 +22,27 @@ model AppUsers {
   UserCharInventory UserCharInventory[]
   UserCharItems UserCharItems[]
 
-  @@map ("AppUsers")
+  @@map ("Users")
 }
 
 model UserCharacter {
   UserCharacterId String @id @default(uuid()) @map("UserCharacterId")
-  AppUserId Int @map("AppUserId")
+  UserId Int @map("UserId")
   health Int @map("health")
   power Int @map("power")
   money Int @map("money")
 
-  User AppUsers @relation(fields: [AppUserId], references: [AppUserId], onDelete: Cascade)
+  User Users @relation(fields: [UserId], references: [UserId], onDelete: Cascade)
 
   @@map("UserCharacter")
 }
 
 model UserCharInventory {
   UserCharInventoryId Int @id @default(autoincrement()) @map("UserCharInventoryId")
-  AppUserId Int @map("AppUserId")
+  UserId Int @map("UserId")
   UserCharacterId Int @map("UserCharacterId")
 
-  User AppUsers @relation(fields: [AppUserId], references: [AppUserId], onDelete: Cascade)
+  User Users @relation(fields: [UserId], references: [UserId], onDelete: Cascade)
   
 
   @@map("UserCharInventory")
@@ -50,10 +50,10 @@ model UserCharInventory {
 
 model UserCharItems {
   UserCharItemsId Int @id @default(autoincrement()) @map("UserCharItemsId")
-  AppUserId Int @map("AppUserId")
+  UserId Int @map("UserId")
   UserCharInventoryId Int @map("UserCharInventoryId")
 
-  User AppUsers @relation(fields: [AppUserId], references: [AppUserId], onDelete: Cascade)
+  User Users @relation(fields: [UserId], references: [UserId], onDelete: Cascade)
 
   @@map("UserCharItems")
 }
