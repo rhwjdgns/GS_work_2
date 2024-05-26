@@ -1,0 +1,60 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model AppUsers {
+  AppUserId Int @id @default(autoincrement()) @map("AppUserId")
+  email String @unique @map("email")
+  password String @map("password")
+
+  UserCharacter UserCharacter[]
+  UserCharInventory UserCharInventory[]
+  UserCharItems UserCharItems[]
+
+  @@map ("AppUsers")
+}
+
+model UserCharacter {
+  UserCharacterId String @id @default(uuid()) @map("UserCharacterId")
+  AppUserId Int @map("AppUserId")
+  health Int @map("health")
+  power Int @map("power")
+  money Int @map("money")
+
+  User AppUsers @relation(fields: [AppUserId], references: [AppUserId], onDelete: Cascade)
+
+  @@map("UserCharacter")
+}
+
+model UserCharInventory {
+  UserCharInventoryId Int @id @default(autoincrement()) @map("UserCharInventoryId")
+  AppUserId Int @map("AppUserId")
+  UserCharacterId Int @map("UserCharacterId")
+
+  User AppUsers @relation(fields: [AppUserId], references: [AppUserId], onDelete: Cascade)
+  
+
+  @@map("UserCharInventory")
+}
+
+model UserCharItems {
+  UserCharItemsId Int @id @default(autoincrement()) @map("UserCharItemsId")
+  AppUserId Int @map("AppUserId")
+  UserCharInventoryId Int @map("UserCharInventoryId")
+
+  User AppUsers @relation(fields: [AppUserId], references: [AppUserId], onDelete: Cascade)
+
+  @@map("UserCharItems")
+}
+
