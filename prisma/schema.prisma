@@ -17,7 +17,7 @@ model Users {
   userId Int @id @default(autoincrement()) @map("userId")
   email String @unique @map("email")
   password String @map("password")
-  passwordCheak String @map("passwordCheak")
+  passwordCheck String @map("passwordCheck")
 
   UserInfos UserInfos?
   UserCharacter UserCharacter[]
