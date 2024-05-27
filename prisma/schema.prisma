@@ -14,15 +14,27 @@ datasource db {
 }
 
 model Users {
-  UserId Int @id @default(autoincrement()) @map("userId")
+  userId Int @id @default(autoincrement()) @map("userId")
   email String @unique @map("email")
   password String @map("password")
+  passwordCheak String @map("passwordCheak")
 
+  UserInfos UserInfos?
   UserCharacter UserCharacter[]
   UserCharInventory UserCharInventory[]
   UserCharItems UserCharItems[]
 
   @@map ("Users")
+}
+
+model UserInfos {
+  userInfoId Int @id @default(autoincrement()) @map("userInfoId")
+  UserId Int @unique @map("UserId")
+  name String @map ("name")
+
+  User Users @relation(fields: [UserId], references: [userId], onDelete: Cascade)
+
+  @@map("UserInfos")
 }
 
 model UserCharacter {
@@ -32,7 +44,7 @@ model UserCharacter {
   power Int @map("power")
   money Int @map("money")
 
-  User Users @relation(fields: [UserId], references: [UserId], onDelete: Cascade)
+  User Users @relation(fields: [UserId], references: [userId], onDelete: Cascade)
 
   @@map("UserCharacter")
 }
@@ -42,7 +54,7 @@ model UserCharInventory {
   UserId Int @map("UserId")
   UserCharacterId Int @map("UserCharacterId")
 
-  User Users @relation(fields: [UserId], references: [UserId], onDelete: Cascade)
+  User Users @relation(fields: [UserId], references: [userId], onDelete: Cascade)
   
 
   @@map("UserCharInventory")
@@ -53,7 +65,7 @@ model UserCharItems {
   UserId Int @map("UserId")
   UserCharInventoryId Int @map("UserCharInventoryId")
 
-  User Users @relation(fields: [UserId], references: [UserId], onDelete: Cascade)
+  User Users @relation(fields: [UserId], references: [userId], onDelete: Cascade)
 
   @@map("UserCharItems")
 }

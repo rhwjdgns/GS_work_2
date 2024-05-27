@@ -8,7 +8,7 @@ import errorHandlingMiddleware from "./middlewares/error-handling.middleware.js"
 dotEnv.config();
 
 const app = express();
-const PORT = 3000;
+const PORT = 3020;
 
 const MySQLStorage = expressMySQLSession(expressSession);
 const sessionStore = new MySQLStorage({
