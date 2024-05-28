@@ -7,7 +7,7 @@ const router = express.Router();
 // 캐릭터 생성 API
 router.post("/characters", authMiddleware, async (req, res, next) => {
   const { userId } = req.user;
-  const { name, health, power, money } = req.body;
+  const { name } = req.body;
   const character = await prisma.characters.create({
     data: {
       UserId: userId,

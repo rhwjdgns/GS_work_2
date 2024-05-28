@@ -7,6 +7,7 @@ import UsersRouter from "./routes/users.router.js";
 import logMiddleware from "./middlewares/log.middleware.js";
 import errorHandlingMiddleware from "./middlewares/error-handling.middleware.js";
 import CharRouter from "./routes/characters.router.js";
+import ItemRouter from "./routes/items.router.js";
 dotEnv.config();
 
 const app = express();
@@ -37,7 +38,7 @@ app.use(
     },
   })
 );
-app.use("/api", [UsersRouter, CharRouter]);
+app.use("/api", [UsersRouter, CharRouter, ItemRouter]);
 app.use(errorHandlingMiddleware);
 
 app.listen(PORT, () => {
