@@ -41,6 +41,9 @@ model Characters {
   CharacterId Int @id @default(autoincrement()) @map("CharacterId")
   UserId Int @map("UserId")
   name String @map("name")
+  health Int @map("health")
+  power Int @map("power")
+  money Int @map("money")
 
   User Users @relation(fields: [UserId], references: [userId], onDelete: Cascade)
 
