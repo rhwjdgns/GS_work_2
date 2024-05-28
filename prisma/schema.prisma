@@ -18,23 +18,13 @@ model Users {
   email String @unique @map("email")
   password String @map("password")
   passwordCheck String @map("passwordCheck")
+  name String @map ("name")
 
-  UserInfos UserInfos?
   Characters Characters[]
   UserCharInventory UserCharInventory[]
   UserCharItems UserCharItems[]
 
   @@map ("Users")
-}
-
-model UserInfos {
-  userInfoId Int @id @default(autoincrement()) @map("userInfoId")
-  UserId Int @unique @map("UserId")
-  name String @map ("name")
-
-  User Users @relation(fields: [UserId], references: [userId], onDelete: Cascade)
-
-  @@map("UserInfos")
 }
 
 model Characters {
