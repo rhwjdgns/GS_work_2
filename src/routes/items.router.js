@@ -1,6 +1,7 @@
 import express from "express";
 import { Prisma } from "@prisma/client";
 import { prisma } from "../utils/prisma/index.js";
+import authMiddleware from "../middlewares/auth.middleware.js";
 
 const router = express.Router();
 
@@ -48,6 +49,33 @@ router.put("/items/:item_code", async (req, res, next) => {
   });
 
   return res.status(200).json({ message: "아이템 수정 성공." });
+});
+
+// 아이템 목록 조회
+router.get("/items", async (req, res, next) => {
+  const item = await prisma.items.findMany({
+    select: {
+      item_code: true,
+      item_name: true,
+      item_price: true,
+    },
+  });
+  return res.status(200).json({ data: item });
+});
+
+// 아이템 상세 조회
+router.get("/items/:item_code", async (req, res, next) => {
+  const { item_code } = req.params;
+  const item = await prisma.items.findFirst({
+    where: { item_code: +item_code },
+    select: {
+      item_code: true,
+      item_name: true,
+      item_stat: true,
+      item_price: true,
+    },
+  });
+  return res.status(200).json({ data: item });
 });
 
 export default router;
