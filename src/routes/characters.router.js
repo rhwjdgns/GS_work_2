@@ -12,9 +12,9 @@ router.post("/characters", authMiddleware, async (req, res, next) => {
     data: {
       UserId: userId,
       name,
-      health,
-      power,
-      money,
+      health: 500,
+      power: 100,
+      money: 10000,
     },
   });
 
