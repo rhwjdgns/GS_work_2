@@ -23,8 +23,31 @@ router.post("/items", async (req, res, next) => {
       item_price,
     },
   });
-
   return res.status(201).json({ data: item });
+});
+
+// 아이템 수정
+router.put("/items/:item_code", async (req, res, next) => {
+  const item_code = +req.params.item_code;
+  const updatedData = req.body;
+  delete updatedData.item_price;
+
+  const item = await prisma.items.findUnique({
+    where: { item_code },
+  });
+
+  if (!item) {
+    return res
+      .status(404)
+      .json({ message: `아이템 코드 ${item_code}에 해당하는 아이템을 찾을 수 없습니다.` });
+  }
+
+  const updatedItem = await prisma.items.update({
+    where: { item_code },
+    data: updatedData,
+  });
+
+  return res.status(200).json({ message: "아이템 수정 성공." });
 });
 
 export default router;
