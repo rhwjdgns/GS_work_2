@@ -46,4 +46,31 @@ router.delete("/characters/:characterId", authMiddleware, async (req, res, next)
   }
 });
 
+// 캐릭터 조회
+router.get("/characters", async (req, res, next) => {
+  const characters = await prisma.characters.findMany({
+    select: {
+      name: true,
+      health: true,
+      power: true,
+    },
+  });
+  return res.status(200).json({ data: characters });
+});
+
+// 캐릭터 상세 조회
+router.get("/characters/:characterId", authMiddleware, async (req, res, next) => {
+  const { CharacterId } = req.params;
+  const character = await prisma.characters.findFirst({
+    where: { characterId: CharacterId },
+    select: {
+      name: true,
+      health: true,
+      power: true,
+      money: true,
+    },
+  });
+  return res.status(200).json({ data: character });
+});
+
 export default router;
