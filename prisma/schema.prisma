@@ -20,7 +20,7 @@ model Users {
   passwordCheck String @map("passwordCheck")
 
   UserInfos UserInfos?
-  UserCharacter UserCharacter[]
+  Characters Characters[]
   UserCharInventory UserCharInventory[]
   UserCharItems UserCharItems[]
 
@@ -37,16 +37,14 @@ model UserInfos {
   @@map("UserInfos")
 }
 
-model UserCharacter {
-  UserCharacterId String @id @default(uuid()) @map("UserCharacterId")
+model Characters {
+  CharacterId Int @id @default(autoincrement()) @map("CharacterId")
   UserId Int @map("UserId")
-  health Int @map("health")
-  power Int @map("power")
-  money Int @map("money")
+  name String @map("name")
 
   User Users @relation(fields: [UserId], references: [userId], onDelete: Cascade)
 
-  @@map("UserCharacter")
+  @@map("Character")
 }
 
 model UserCharInventory {

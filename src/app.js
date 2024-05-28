@@ -1,10 +1,12 @@
 import express from "express";
+import cookieParser from "cookie-parser";
 import expressSession from "express-session";
 import expressMySQLSession from "express-mysql-session";
 import dotEnv from "dotenv";
 import UsersRouter from "./routes/users.router.js";
+import logMiddleware from "./middlewares/log.middleware.js";
 import errorHandlingMiddleware from "./middlewares/error-handling.middleware.js";
-
+import CharRouter from "./routes/characters.router.js";
 dotEnv.config();
 
 const app = express();
@@ -21,7 +23,9 @@ const sessionStore = new MySQLStorage({
   createDatabaseTable: true,
 });
 
+app.use(logMiddleware);
 app.use(express.json());
+app.use(cookieParser());
 app.use(
   expressSession({
     secret: process.env.SESSION_SECRET_KEY,
@@ -33,7 +37,7 @@ app.use(
     },
   })
 );
-app.use("/api", UsersRouter);
+app.use("/api", [UsersRouter, CharRouter]);
 app.use(errorHandlingMiddleware);
 
 app.listen(PORT, () => {

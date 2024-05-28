@@ -7,7 +7,6 @@ import authMiddleware from "../middlewares/auth.middleware.js";
 import { Prisma } from "@prisma/client";
 
 const router = express.Router();
-const ACCESS_TOKEN_SECRET_KEY = `Sparta`;
 
 // 사용자 회원가입 API
 router.post("/sign-up", async (req, res, next) => {
@@ -50,7 +49,6 @@ router.post("/sign-up", async (req, res, next) => {
 
 // 사용자 로그인 API
 router.post("/sign-in", async (req, res, next) => {
-  const { id } = req.body;
   const { email, password } = req.body;
   const user = await prisma.users.findFirst({ where: { email } });
   if (!user) {
@@ -61,13 +59,9 @@ router.post("/sign-in", async (req, res, next) => {
     return res.status(401).json({ message: "비밀번호가 일치하지 않습니다." });
   }
 
+  // JWT 발급
   req.session.userId = user.userId;
 
-  const accessToken = jwt.sign({ id: id }, ACCESS_TOKEN_SECRET_KEY, {
-    expiresIn: "10s",
-  });
-
-  res.cookie("accessToken", accessToken);
   return res.status(200).json({ message: "로그인 성공했습니다." });
 });
 
